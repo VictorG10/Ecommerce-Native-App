@@ -6,6 +6,7 @@ const API_URL = "https://fakestoreapi.com";
 export const getProducts = async (): Promise<Product[]> => {
   try {
     const response = await fetch(`${API_URL}/products`);
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -21,6 +22,7 @@ export const getProducts = async (): Promise<Product[]> => {
 export const getProduct = async (id: string) => {
   try {
     const response = await fetch(`${API_URL}/products/${id}`);
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -46,5 +48,3 @@ export const getCategories = async (): Promise<string[]> => {
     throw error;
   }
 };
-
-// 59:29 zustand

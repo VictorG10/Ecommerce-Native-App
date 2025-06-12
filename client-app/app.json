@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "client-app",
-    "slug": "client-app",
+    "name": "e-commerce-app",
+    "slug": "e-commerce-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "clientapp",
+    "scheme": "e-commerce-app",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
