@@ -19,7 +19,7 @@ export const getProducts = async (): Promise<Product[]> => {
 };
 
 // Get single Product
-export const getProduct = async (id: string) => {
+export const getProduct = async (id: number): Promise<Product> => {
   try {
     const response = await fetch(`${API_URL}/products/${id}`);
 
@@ -29,7 +29,7 @@ export const getProduct = async (id: string) => {
 
     return await response.json();
   } catch (error) {
-    console.log("Network response was not ok", error);
+    console.log(`Failed to fetch product with ID ${id}:`, error);
     throw error;
   }
 };

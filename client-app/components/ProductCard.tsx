@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const router = useRouter();
 
   const handleProductRoute = () => {
-    //   router.push(`/product/${id}`);
+    router.push(`/product/[id]`);
   };
 
   const handleAddToCart = () => {
@@ -39,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       type: "success",
       text1: "Product added to cart",
       text2: `${title} has been added to your cart`,
-      position: "bottom",
+      visibilityTime: 2000,
     });
   };
 
@@ -47,6 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <TouchableOpacity
       style={[styles.card, compact && styles.compactCard, customStyle]}
       activeOpacity={0.8}
+      onPress={handleProductRoute}
     >
       <View style={styles.imageContainer}>
         <Image
