@@ -1,13 +1,25 @@
 import HomeHeader from "@/components/HomeHeader";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import ProductCard from "@/components/ProductCard";
 import Wrapper from "@/components/Wrapper";
 import AppColors from "@/constants/Colors";
 import { useProductsStore } from "@/store/productStore";
 import { Product } from "@/type";
+import { AntDesign } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [newProducts, setNewProducts] = useState<Product[]>([]);
   const {
@@ -32,11 +44,8 @@ export default function HomeScreen() {
     }
   }, [products]);
 
-  if (!loading) {
+  if (loading) {
     return (
-      // <Wrapper>
-      //   <LoadingSpinner fullScreen />
-      // </Wrapper>
       <SafeAreaView style={styles.container}>
         <View style={styles.errorContainer}>
           <LoadingSpinner fullScreen />
@@ -54,16 +63,93 @@ export default function HomeScreen() {
       </SafeAreaView>
     );
   }
+
+  const navigateToCategory = (category: string) => {
+    router.push({
+      pathname: "/(tabs)/shop",
+      params: { category: category },
+    });
+  };
+
   return (
     <View style={styles.wrapper}>
       <HomeHeader />
 
-      <View>
-        <ScrollView>
-          <View>
-            <View>
-              <Text>Categories</Text>
-              1:28:11
+      <View style={styles.contentContainer}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainerView}
+        >
+          {/* Categories  */}
+          <View style={styles.categoriesSection}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Categories</Text>
+            </View>
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.categoriesSection}
+            >
+              {categories?.map((category) => (
+                <TouchableOpacity
+                  key={category}
+                  style={styles.categoryButton}
+                  onPress={() => navigateToCategory(category)}
+                >
+                  <AntDesign
+                    name="tag"
+                    size={16}
+                    color={AppColors.primary[500]}
+                  />
+                  <Text style={styles.categoryText}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+
+          {/* Featured Products  */}
+          <View style={styles.featuredSection}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Featured Products</Text>
+              <TouchableOpacity>
+                <Text style={styles.seeAllText}>See All</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={featuredProducts}
+              keyExtractor={(item) => item.id.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.featuredProductsContainer}
+              renderItem={({ item }) => (
+                <View style={styles.featuredProductContainer}>
+                  <ProductCard product={item} compact />
+                </View>
+              )}
+            />
+          </View>
+
+          {/* Newest Products  */}
+          <View style={styles.newestSection}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Newest Arrivals</Text>
+              <TouchableOpacity>
+                <Text style={styles.seeAllText}>See All</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.productsGrid}>
+              {products?.map((product) => (
+                <View key={product?.id} style={styles.productContainer}>
+                  <ProductCard
+                    product={product}
+                    customStyle={{ width: "100%" }}
+                  />
+                </View>
+              ))}
             </View>
           </View>
         </ScrollView>
